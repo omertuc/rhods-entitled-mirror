@@ -1,0 +1,4 @@
+[rhods-entitled-mirror]
+name=rhods-entitled-mirror
+baseurl=http://10.88.0.1:8080/rhel-8-for-x86_64-baseos-rpms/
+enabled=1

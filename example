@@ -1,0 +1,2 @@
+podman run -u root -it -v $HOME/repo:/repo:z quay.io/otuchfel/mirror-expr:2
+
