@@ -121,37 +121,28 @@
       }
     },
     {
-      "kind": "DeploymentConfig",
       "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
       "metadata": {
-        "name": "${NAME}",
-        "annotations": {
-          "description": "Defines how to deploy the application server",
-          "template.alpha.openshift.io/wait-for-ready": "true"
-        }
+        "name": "${NAME}"
       },
       "spec": {
-        "strategy": {
-          "type": "Rolling"
-        },
-        "triggers": [
-          {
-            "type": "ImageChange",
-            "imageChangeParams": {
-              "automatic": true,
-              "containerNames": [
-                "nginx-example"
-              ],
-              "from": {
-                "kind": "ImageStreamTag",
-                "name": "${NAME}:latest"
-              }
+          "accessModes": ["ReadWriteOnce"],
+          "resources": {
+            "requests": {
+                "storage": "20Gi"
             }
           },
-          {
-            "type": "ConfigChange"
-          }
-        ],
+          "storageClassName": "gp2"
+      }
+    },
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "name": "${NAME}"
+      },
+      "spec": {
         "replicas": 1,
         "selector": {
           "name": "${NAME}"
@@ -164,15 +155,37 @@
             }
           },
           "spec": {
+            "volumes": [
+                {
+                    "name": "repo",
+                    "persistentVolumeClaim": {
+                      "claimName": "${NAME}"
+                    }
+                }
+            ],
+            "initContainers": [
+                {
+                    "name": "reposync",
+                    "image": "quay.io/otuchfel/rhods-mirror-sync:latest",
+                    "volumeMounts": [
+                        {
+                            "name": "repo",
+                            "mountPath": "/repo"
+                        }
+                    ]
+                }
+            ],
             "containers": [
               {
                 "name": "nginx",
-                "image": " ",
-                "ports": [
-                  {
-                    "containerPort": 8080
-                  }
+                "image": " quay.io/otuchfel/rhods-mirror-serve:latest",
+                "volumeMounts": [
+                    {
+                        "name": "repo",
+                        "mountPath": "/repo"
+                    }
                 ],
+                "ports": [{"containerPort": 8080}],
                 "readinessProbe": {
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 3,
@@ -189,8 +202,6 @@
                         "port": 8080
                     }
                 },
-                "env": [
-                ],
                 "resources": {
                   "limits": {
                     "memory": "${MEMORY_LIMIT}"

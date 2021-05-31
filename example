@@ -1,5 +1,7 @@
 podman run -u root -it -p8080:8080 -v $HOME/nginx.conf:/etc/nginx/nginx.conf:z -v $HOME/repo:/repo:z registry.access.redhat.com/ubi8/nginx-118:latest nginx -g "daemon off; error_log /dev/stdout info;"
 
+podman run --pull always -u root -it -p8080:8080 -v $HOME/repo:/repo:z quay.io/otuchfel/rhods-mirror-serve:latest
+
 cd ~
 mkdir repo
 podman run -it -u root -v $HOME/repo:/repo:z quay.io/otuchfel/mirror-expr:4 
