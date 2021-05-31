@@ -1,0 +1,7 @@
+FROM registry.access.redhat.com/ubi8/nginx-118:latest
+
+USER root
+
+COPY nginx.conf /etc/nginx/nginx.conf
+
+ENTRYPOINT ["nginx", "-g", "daemon off; error_log /dev/stdout info;"]

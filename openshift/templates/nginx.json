@@ -56,71 +56,6 @@
       }
     },
     {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}",
-        "annotations": {
-          "description": "Keeps track of changes in the application image"
-        }
-      }
-    },
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}",
-        "namespace": "${NAMESPACE}"
-      },
-      "spec": {
-        "source": {
-          "type": "Git",
-          "git": {
-            "uri": "${SOURCE_REPOSITORY_URL}",
-            "ref": "${SOURCE_REPOSITORY_REF}"
-          },
-          "contextDir": "${CONTEXT_DIR}"
-        },
-        "strategy": {
-          "type": "Source",
-          "sourceStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "namespace": "${NAMESPACE}",
-              "name": "nginx:${NGINX_VERSION}"
-            }
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "${NAME}:latest",
-            "namespace": "${NAMESPACE}"
-          }
-        },
-        "triggers": [
-          {
-            "type": "ImageChange"
-          },
-          {
-            "type": "ConfigChange"
-          },
-          {
-            "type": "GitHub",
-            "github": {
-              "secret": "${GITHUB_WEBHOOK_SECRET}"
-            }
-          },
-          {
-            "type": "Generic",
-            "generic": {
-              "secret": "${GENERIC_WEBHOOK_SECRET}"
-            }
-          }
-        ]
-      }
-    },
-    {
       "apiVersion": "v1",
       "kind": "PersistentVolumeClaim",
       "metadata": {
@@ -145,13 +80,15 @@
       "spec": {
         "replicas": 1,
         "selector": {
-          "name": "${NAME}"
+          "matchLabels": {
+              "app": "${NAME}"
+          }
         },
         "template": {
           "metadata": {
             "name": "${NAME}",
             "labels": {
-              "name": "${NAME}"
+              "app": "${NAME}"
             }
           },
           "spec": {
@@ -178,7 +115,7 @@
             "containers": [
               {
                 "name": "nginx",
-                "image": " quay.io/otuchfel/rhods-mirror-serve:latest",
+                "image": "quay.io/otuchfel/rhods-mirror-serve:latest",
                 "volumeMounts": [
                     {
                         "name": "repo",
@@ -201,11 +138,6 @@
                         "path": "/",
                         "port": 8080
                     }
-                },
-                "resources": {
-                  "limits": {
-                    "memory": "${MEMORY_LIMIT}"
-                  }
                 }
               }
             ]
@@ -228,37 +160,6 @@
       "description": "The OpenShift Namespace where the ImageStream resides.",
       "required": true,
       "value": ""
-    },
-    {
-      "name": "NGINX_VERSION",
-      "displayName": "NGINX Version",
-      "description": "Version of NGINX image to be used (1.16-el8 by default).",
-      "required": true,
-      "value": "1.16-el8"
-    },
-    {
-      "name": "MEMORY_LIMIT",
-      "displayName": "Memory Limit",
-      "description": "Maximum amount of memory the container can use.",
-      "required": true,
-      "value": "512Mi"
-    },
-    {
-      "name": "SOURCE_REPOSITORY_URL",
-      "displayName": "Git Repository URL",
-      "description": "The URL of the repository with your application source code.",
-      "required": true,
-      "value": ""
-    },
-    {
-      "name": "SOURCE_REPOSITORY_REF",
-      "displayName": "Git Reference",
-      "description": "Set this to a branch name, tag or other ref of your repository if you are not using the default branch."
-    },
-    {
-      "name": "CONTEXT_DIR",
-      "displayName": "Context Directory",
-      "description": "Set this to the relative path to your project if it is not in the root of your repository."
     },
     {
       "name": "APPLICATION_DOMAIN",
