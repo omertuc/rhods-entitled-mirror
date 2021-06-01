@@ -110,6 +110,9 @@
                 {
                     "name": "reposync",
                     "image": "quay.io/otuchfel/rhods-mirror-sync:latest",
+                    "securityContext": {
+                        "privileged": true
+                    },
                     "volumeMounts": [
                         {
                             "name": "repo",
