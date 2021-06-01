@@ -67,8 +67,7 @@
             "requests": {
                 "storage": "20Gi"
             }
-          },
-          "storageClassName": "gp2"
+          }
       }
     },
     {
@@ -92,6 +91,9 @@
             }
           },
           "spec": {
+            "nodeSelector": {
+                "entitled": "true"
+            },
             "volumes": [
                 {
                     "name": "repo",

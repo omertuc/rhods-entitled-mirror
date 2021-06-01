@@ -4,4 +4,5 @@ USER root
 
 RUN dnf install yum-utils -y
 
-ENTRYPOINT ["reposync", "-a", "x86_64", "--repoid", "rhel-8-for-x86_64-baseos-rpms", "-p", "/repo", "--download-metadata"]
+# ENTRYPOINT ["reposync", "-a", "x86_64", "--repoid", "rhel-8-for-x86_64-baseos-rpms", "-p", "/repo", "--download-metadata"]
+ENTRYPOINT ["dnf", "repolist"]
