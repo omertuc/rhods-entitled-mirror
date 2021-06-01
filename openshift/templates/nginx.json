@@ -23,6 +23,7 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
+          "namespace": "${NAMESPACE}",
         "name": "${NAME}"
       },
       "spec": {
@@ -43,6 +44,7 @@
       "apiVersion": "v1",
       "metadata": {
         "name": "${NAME}",
+        "namespace": "${NAMESPACE}",
         "annotations": {
           "template.openshift.io/expose-uri": "http://{.spec.host}{.spec.path}"
         }
@@ -59,7 +61,8 @@
       "apiVersion": "v1",
       "kind": "PersistentVolumeClaim",
       "metadata": {
-        "name": "${NAME}"
+        "name": "${NAME}",
+        "namespace": "${NAMESPACE}"
       },
       "spec": {
           "accessModes": ["ReadWriteOnce"],
@@ -74,7 +77,8 @@
       "apiVersion": "apps/v1",
       "kind": "Deployment",
       "metadata": {
-        "name": "${NAME}"
+        "name": "${NAME}",
+        "namespace": "${NAMESPACE}"
       },
       "spec": {
         "replicas": 1,
