@@ -12,4 +12,4 @@ oc delete -n gpu-operator-resources \
     service/${NAME} \
     pvc/${NAME} \
     serviceaccount/${NAME} \
-    securitycontextconstraint/${NAME}
+    securitycontextconstraints.security.openshift.io/${NAME}

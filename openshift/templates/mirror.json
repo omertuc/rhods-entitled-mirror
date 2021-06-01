@@ -23,7 +23,7 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-          "namespace": "${NAMESPACE}",
+        "namespace": "${NAMESPACE}",
         "name": "${NAME}"
       },
       "spec": {
@@ -35,7 +35,7 @@
           }
         ],
         "selector": {
-          "name": "${NAME}"
+          "app": "${NAME}"
         }
       }
     },
@@ -196,7 +196,7 @@
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 3,
                   "httpGet": {
-                    "path": "/",
+                    "path": "/rhel-8-for-x86_64-baseos-rpms/repodata/repomd.xml",
                     "port": 8080
                   }
                 },
@@ -204,7 +204,7 @@
                     "timeoutSeconds": 3,
                     "initialDelaySeconds": 30,
                     "httpGet": {
-                        "path": "/",
+                        "path": "/rhel-8-for-x86_64-baseos-rpms/repodata/repomd.xml",
                         "port": 8080
                     }
                 }
