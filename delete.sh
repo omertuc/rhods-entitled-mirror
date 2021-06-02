@@ -6,10 +6,12 @@ SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 NAME=mymirror
 
-oc delete -n gpu-operator-resources \
+# This script intentionally doesn't delete the PVC because
+# syncing the repo takes a long time
+oc delete -n rhods-mirror \
     deployment/${NAME} \
     route/${NAME} \
     service/${NAME} \
-    pvc/${NAME} \
     serviceaccount/${NAME} \
     securitycontextconstraints.security.openshift.io/${NAME}
+

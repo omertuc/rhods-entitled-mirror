@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -uxo pipefail
 
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
