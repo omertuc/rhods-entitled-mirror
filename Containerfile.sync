@@ -4,4 +4,6 @@ USER root
 
 RUN dnf install yum-utils -y
 
-ENTRYPOINT ["reposync", "--repoid", "rhel-8-for-x86_64-baseos-rpms", "-p", "/repo", "--download-metadata"]
+COPY sync_files/sync_commands.sh /scripts/
+RUN ["chmod", "+x", "/scripts/sync_commands.sh"]
+ENTRYPOINT ["/scripts/sync_commands.sh"]
