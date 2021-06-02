@@ -1,4 +1,4 @@
 [rhods-entitled-mirror]
 name=rhods-entitled-mirror
-baseurl=http://mymirror.gpu-operator-resources.svc.cluster.local:8080/rhel-8-for-x86_64-baseos-rpms/
+baseurl=http://mymirror-rhods-mirror.apps.ci-ln-gcvklik-d5d6b.origin-ci-int-aws.dev.rhcloud.com/rhel-8-for-x86_64-baseos-rpms/
 enabled=1
