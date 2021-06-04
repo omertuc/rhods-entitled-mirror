@@ -96,6 +96,14 @@ objects:
       - system:cluster-admins
       - system:nodes
       - system:masters
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: ${NAME}
+      namespace: ${NAMESPACE}
+    type: kubernetes.io/tls
+    data:
+      client-ca: ${CLIENT_CA} 
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -120,6 +128,12 @@ objects:
             - name: repo
               persistentVolumeClaim:
                 claimName: ${NAME}
+            - name: client-ca
+              secret:
+                secretName: ${NAME}
+                items:
+                  - key: client-ca
+                    path: client-ca
           initContainers:
             - name: reposync
               image: quay.io/otuchfel/rhods-mirror-sync:latest
@@ -134,6 +148,9 @@ objects:
               volumeMounts:
                 - name: repo
                   mountPath: /repo
+                - name: secrets
+                  mountPath: /secrets/
+                  readOnly: true
               ports:
                 - containerPort: 8080
               readinessProbe:
@@ -159,7 +176,8 @@ parameters:
     description: The OpenShift Namespace where the ImageStream resides.
     required: true
     value: ""
-  - name: APPLICATION_DOMAIN
-    displayName: Application Hostname
-    description: The exposed hostname that will route to the nginx service, if left blank a value will be defaulted.
+  - name: CLIENT_CA
+    displayName: Client CA certificate
+    description: The certificate used to sign client certificates
+    required: true
     value: ""
