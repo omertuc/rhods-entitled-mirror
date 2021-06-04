@@ -27,8 +27,8 @@ objects:
     spec:
       ports:
         - name: web
-          port: 8080
-          targetPort: 8080
+          port: 443
+          targetPort: 443
       selector:
         app: ${NAME}
   - kind: Route
@@ -38,8 +38,14 @@ objects:
       namespace: ${NAMESPACE}
       annotations:
         template.openshift.io/expose-uri: http://{.spec.host}{.spec.path}
+        kubernetes.io/tls-acme: "true"
+        acme.openshift.io/secret-name: ${NAME}-acme
     spec:
       host: ""
+      port:
+        targetPort: 443
+      tls:
+        termination: passthrough
       to:
         kind: Service
         name: ${NAME}
@@ -99,11 +105,18 @@ objects:
   - apiVersion: v1
     kind: Secret
     metadata:
-      name: ${NAME}
+      name: ${NAME}-client-auth
       namespace: ${NAMESPACE}
     type: Opaque
     data:
       client-ca: ${CLIENT_CA} 
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: ${NAME}-nginx
+      namespace: ${NAMESPACE}
+    binaryData:
+      nginx.conf: ${NGINX_CONFIG} 
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -130,10 +143,24 @@ objects:
                 claimName: ${NAME}
             - name: secrets
               secret:
-                secretName: ${NAME}
+                secretName: ${NAME}-client-auth
                 items:
                   - key: client-ca
-                    path: client-ca
+                    path: client_ca.crt
+            - name: acme
+              secret:
+                secretName: ${NAME}-acme
+                items:
+                  - key: tls.crt
+                    path: tls.crt
+                  - key: tls.key
+                    path: tls.key
+            - name: nginx-config
+              configMap:
+                name: ${NAME}-nginx
+                items:
+                  - key: nginx.conf
+                    path: nginx.conf
           initContainers:
             - name: reposync
               image: quay.io/otuchfel/rhods-mirror-sync:latest
@@ -146,25 +173,27 @@ objects:
             - name: nginx
               image: quay.io/otuchfel/rhods-mirror-serve:latest
               volumeMounts:
+                - name: nginx-config
+                  mountPath: /etc/nginx/nginx.conf
+                  subPath: nginx.conf
                 - name: repo
                   mountPath: /repo
-                - name: secrets
-                  mountPath: /secrets/
+                - name: client-auth
+                  mountPath: /client-auth/
+                  readOnly: true
+                - name: acme
+                  mountPath: /acme/
                   readOnly: true
               ports:
-                - containerPort: 8080
+                - containerPort: 443
               readinessProbe:
                 timeoutSeconds: 3
                 initialDelaySeconds: 3
                 httpGet:
-                  path: /rhel-8-for-x86_64-baseos-rpms/repodata/repomd.xml
+                  path: /ready
                   port: 8080
-              livenessProbe:
-                timeoutSeconds: 3
-                initialDelaySeconds: 30
-                httpGet:
-                  path: /rhel-8-for-x86_64-baseos-rpms/repodata/repomd.xml
-                  port: 8080
+                  scheme: HTTP
+
 parameters:
   - name: NAME
     displayName: Name
@@ -179,5 +208,10 @@ parameters:
   - name: CLIENT_CA
     displayName: Client CA certificate
     description: The certificate used to sign client certificates
+    required: true
+    value: ""
+  - name: NGINX_CONFIG
+    displayName: NGINX Configuration File
+    description: NGINX Configuration File
     required: true
     value: ""

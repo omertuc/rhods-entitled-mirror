@@ -1,7 +1,7 @@
 # OpenSSL configuration file for creating a CSR for a server certificate
 
 # the name of your organization
-ORGNAME = Red Hat
+ORGNAME = Red Hat Client
 
 [ req ]
 default_bits = 4096

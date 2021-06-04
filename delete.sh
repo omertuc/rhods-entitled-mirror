@@ -12,5 +12,7 @@ oc delete -n ${NAMESPACE} \
     deployment/${NAME} \
     route/${NAME} \
     service/${NAME} \
+    secret/${NAME}-client-auth \
+    secret/${NAME}-acme \
     serviceaccount/${NAME} \
     securitycontextconstraints.security.openshift.io/${NAME}
