@@ -39,7 +39,7 @@ objects:
       annotations:
         template.openshift.io/expose-uri: http://{.spec.host}{.spec.path}
     spec:
-      host: ${APPLICATION_DOMAIN}
+      host: ""
       to:
         kind: Service
         name: ${NAME}
@@ -101,7 +101,7 @@ objects:
     metadata:
       name: ${NAME}
       namespace: ${NAMESPACE}
-    type: kubernetes.io/tls
+    type: Opaque
     data:
       client-ca: ${CLIENT_CA} 
   - apiVersion: apps/v1
@@ -128,7 +128,7 @@ objects:
             - name: repo
               persistentVolumeClaim:
                 claimName: ${NAME}
-            - name: client-ca
+            - name: secrets
               secret:
                 secretName: ${NAME}
                 items:
