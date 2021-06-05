@@ -5,15 +5,6 @@ To perform client-authentication on an NGINX instance, it first must be configur
 
 In order to mint a client certificate, a CA (certificate and private key) must be created. The CA certificate and private key will be used to sign locally generated client certificates that can then be given to client software (e.g. yum) in order to authenticate against the server.
 
-To enable client-authentication, on top of the regular server-authentication, NGINX has to be configured with these 2 additional server config lines: 
-```
-...
-    ssl_verify_client on;
-    ssl_client_certificate /client-auth/client_ca.crt;
-...
-```
-Where `/client-auth/client_ca.crt` is the CA certificate we created. Note that NGINX does not need the CA private key, that key is only needed locally to mint client certificates.
-
 The client software (e.g. yum) must be given both the client certificate and the client private key corresponding to that certificate in order to authenticate against the server.
 
 # Files 
@@ -41,3 +32,35 @@ The client software (e.g. yum) must be given both the client certificate and the
 │   └─* generated_client.key # The generated client private key
 └── delete.sh # A script to delete all generated files
 ```
+
+To summarize:
+- Run `./all.sh` to generate everything (note that this will destroy existing files).
+- All the client needs for client-authentication is the `client/generated_client.key` and `client/generated_client.crt`
+- All the server needs for authenticating clients is the `ca/generated_ca.crt` file
+
+# yum
+Yum repo definitions on the client have to be configured with the 3 following additional lines:
+
+```ini
+[...]
+...
+sslverify=1
+sslclientkey=/client-auth/client.key
+sslclientcert=/client-auth/client.crt
+```
+
+Where `/client-auth/client.key` is the client private key and `/client-auth/client.crt` is the client certificate.
+
+# NGINX
+To enable client-authentication, on top of the regular server-authentication, NGINX has to be configured with these 2 additional server config lines: 
+```
+...
+    ssl_verify_client on;
+    ssl_client_certificate /client-auth/client_ca.crt;
+...
+```
+Where `/client-auth/client_ca.crt` is the CA certificate we created. Note that NGINX does not need the CA private key, that key is only needed locally to mint client certificates.
+
+
+
+
