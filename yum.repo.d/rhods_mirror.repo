@@ -1,25 +1,41 @@
 [rhocp-4.5-for-rhel-8-x86_64-rpms]
 name=rhocp-4.5-for-rhel-8-x86_64-rpms
-baseurl=http://mymirror-rhods-mirror.apps.rhods-mirror.psap.aws.rhperfscale.org/rhocp-4.5-for-rhel-8-x86_64-rpms/
+baseurl=https://mirrorci-rhods-mirror.apps.rhods-mirror.psap.aws.rhperfscale.org/rhocp-4.5-for-rhel-8-x86_64-rpms/
 enabled=1
+sslverify=1
+sslclientkey=/client-auth/client.key
+sslclientcert=/client-auth/client.crt
 
 [rhocp-4.6-for-rhel-8-x86_64-rpms]
 name=rhods-entitled-ocs-4.6
-baseurl=http://mymirror-rhods-mirror.apps.rhods-mirror.psap.aws.rhperfscale.org/rhocp-4.6-for-rhel-8-x86_64-rpms/
+baseurl=https://mirrorci-rhods-mirror.apps.rhods-mirror.psap.aws.rhperfscale.org/rhocp-4.6-for-rhel-8-x86_64-rpms/
 enabled=1
+sslverify=1
+sslclientkey=/client-auth/client.key
+sslclientcert=/client-auth/client.crt
 
 [rhocp-4.7-for-rhel-8-x86_64-rpms]
 name=rhocp-4.7-for-rhel-8-x86_64-rpms
-baseurl=http://mymirror-rhods-mirror.apps.rhods-mirror.psap.aws.rhperfscale.org/rhocp-4.7-for-rhel-8-x86_64-rpms/
+baseurl=https://mirrorci-rhods-mirror.apps.rhods-mirror.psap.aws.rhperfscale.org/rhocp-4.7-for-rhel-8-x86_64-rpms/
 enabled=1
+sslverify=1
+sslclientkey=/client-auth/client.key
+sslclientcert=/client-auth/client.crt
 
-[rhods-entitled-mirror-rhel-8-for-x86_64-baseos-rpms]
-name=rhods-entitled-mirror-rhel-8-for-x86_64-baseos-rpms
-baseurl=http://mymirror-rhods-mirror.apps.rhods-mirror.psap.aws.rhperfscale.org/rhel-8-for-x86_64-baseos-rpms/
+[rhel-8-for-x86_64-baseos-rpms]
+name=rhel-8-for-x86_64-baseos-rpms
+baseurl=https://mirrorci-rhods-mirror.apps.rhods-mirror.psap.aws.rhperfscale.org/rhel-8-for-x86_64-baseos-rpms/
 enabled=1
+sslverify=1
+sslclientkey=/client-auth/client.key
+sslclientcert=/client-auth/client.crt
 
 [rhel-8-for-x86_64-baseos-eus-rpms]
 name=rhel-8-for-x86_64-baseos-eus-rpms
-baseurl=http://mymirror-rhods-mirror.apps.rhods-mirror.psap.aws.rhperfscale.org/rhel-8-for-x86_64-baseos-eus-rpms/
+baseurl=https://mirrorci-rhods-mirror.apps.rhods-mirror.psap.aws.rhperfscale.org/rhel-8-for-x86_64-baseos-eus-rpms/
+enabled=1
+sslverify=1
+sslclientkey=/client-auth/client.key
+sslclientcert=/client-auth/client.crt
 
 
