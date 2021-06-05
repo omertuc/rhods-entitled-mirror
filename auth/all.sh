@@ -4,6 +4,7 @@ set -euxo pipefail
 
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
+${SCRIPT_DIR}/delete.sh
 ${SCRIPT_DIR}/ca/gen_ca.sh
 ${SCRIPT_DIR}/client/gen_client.sh
 cd client
