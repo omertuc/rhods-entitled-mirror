@@ -9,13 +9,13 @@ The client software (e.g. yum) must be given both the client certificate and the
 
 # Files 
 (Files marked with * are generated and gitignored) 
-```
+```bash
 .
 ├── all.sh # A convenience script - Deletes previously generated artifacts, 
-│            generates a CA private key and a corresponding CA certificate, generates a client
-│            private key along with a client CSR (Certificate Signing Request), then uses the
-│            CA files to mint a client certificate out of the client CSR. The resulting client
-│            certificate and client private key are placed in the `client` directory.
+│          # generates a CA private key and a corresponding CA certificate, generates a client
+│          # private key along with a client CSR (Certificate Signing Request), then uses the
+│          # CA files to mint a client certificate out of the client CSR. The resulting client
+│          # certificate and client private key are placed in the `client` directory.
 ├── ca # A directory containing scripts and files for the CA
 │   ├── csr.cnf # an `openssl req` configuration file, with organization name & country details for the CA.
 │   ├── gen_ca.sh # A script for generating a CA private key and corresponding certificate.
@@ -24,8 +24,8 @@ The client software (e.g. yum) must be given both the client certificate and the
 │   └── sign.sh # A script that takes a CSR as input, and uses the generated CA files to mint a client certificate.
 ├── client # A directory containing scripts and files for the client
 │   ├── csr.cnf # an `openssl req` configuration file, with organization name & country details for the client.
-│   │             Note that the organization name for the client must be different from the server, otherwise NGINX
-│   │             will consider it "self-signed".
+│   │           # Note that the organization name for the client must be different from the server, otherwise NGINX
+│   │           # will consider it "self-signed".
 │   ├── gen_client.sh # A script for generating a client private key and corresponding certificate.
 │   ├─* generated_client.crt # The generated client certificate
 │   ├─* generated_client.csr # The generated client CSR (usually automatically deleted by `all.sh`)
