@@ -141,7 +141,7 @@ objects:
             - name: repo
               persistentVolumeClaim:
                 claimName: ${NAME}
-            - name: secrets
+            - name: client-auth
               secret:
                 secretName: ${NAME}-client-auth
                 items:
