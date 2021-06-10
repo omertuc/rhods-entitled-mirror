@@ -140,7 +140,7 @@ objects:
           volumes:
             - name: repo
               persistentVolumeClaim:
-                claimName: ${NAME}
+                claimName: mymirror
             - name: client-auth
               secret:
                 secretName: ${NAME}-client-auth
