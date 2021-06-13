@@ -16,6 +16,7 @@ The client software (e.g. yum) must be given both the client certificate and the
 │          # private key along with a client CSR (Certificate Signing Request), then uses the
 │          # CA files to mint a client certificate out of the client CSR. The resulting client
 │          # certificate and client private key are placed in the `client` directory.
+│          # The client certificate and key are also concatenated into `generated_client_creds.pem`.
 ├── ca # A directory containing scripts and files for the CA
 │   ├── csr.cnf # an `openssl req` configuration file, with organization name & country details for the CA.
 │   ├── gen_ca.sh # A script for generating a CA private key and corresponding certificate.
@@ -30,6 +31,8 @@ The client software (e.g. yum) must be given both the client certificate and the
 │   ├─* generated_client.crt # The generated client certificate
 │   ├─* generated_client.csr # The generated client CSR (usually automatically deleted by `all.sh`)
 │   └─* generated_client.key # The generated client private key
+│   ├─* generated_client_creds.pem # The client key and certificate, concatenated - for convenience. 
+│   │                              # This is the file we place in the CI vault
 └── delete.sh # A script to delete all generated files
 ```
 
